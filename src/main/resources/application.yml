@@ -1,0 +1,5 @@
+app:
+  security.jwt:
+    ttl: 1800000
+    secret: runningcoder
+
