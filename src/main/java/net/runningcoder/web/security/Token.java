@@ -1,19 +1,17 @@
-package net.runningcoder.web.dto.rsp;
+package net.runningcoder.web.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.runningcoder.web.security.UserContext;
 
 /**
- * Created by wangmaocheng on 2017/10/31.
+ * Created by wangmaocheng on 2017/11/3.
  */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class TokenInfoDto {
+public class Token {
     private String accessToken;
     private Long expiresIn;
     private String refreshToken;
-    private UserContext userInfo;
 }

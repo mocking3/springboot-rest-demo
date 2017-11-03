@@ -63,7 +63,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         token = token.substring(properties.getSecurity().getAuthPrefix().length(), token.length());
         UserContext userContext = null;
         try {
-            userContext = tokenManager.parseUser(token);
+            userContext = tokenManager.parseUserByAccessToken(token);
         } catch (ExpiredJwtException e) {
             throw new RestException(RspCode.TOKEN_AUTH_EXPIRED);
         } catch (SignatureException e) {

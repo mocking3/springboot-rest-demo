@@ -22,7 +22,8 @@ public class AppProperties {
 
     @Data
     public static class Jwt {
-        private Long ttl;
+        private Long accessTokenExpiresIn;
+        private Long refreshTokenExpiresIn;
         private String secret;
     }
 }
