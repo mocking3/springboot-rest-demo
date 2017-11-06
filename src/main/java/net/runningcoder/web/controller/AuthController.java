@@ -25,8 +25,10 @@ public class AuthController {
     @PostMapping
     @ResponseBody
     public TokenInfoDto createToken(@RequestBody CreateTokenDto reqDto) {
-        UserContext userContext = new UserContext(1l, "wangmaocheng", "王茂成",
-                Lists.newArrayList("ROLE_ADMIN", "ROLE_EDITOR"));
+        UserContext userContext = new UserContext("wangmaocheng", Lists.newArrayList("ROLE_ADMIN", "ROLE_EDITOR"));
+        userContext.put("id", 1l);
+        userContext.put("name", "王茂成");
+
         Token token = tokenManager.createToken(userContext);
         TokenInfoDto tokenInfoDto = new TokenInfoDto(
                 token.getAccessToken(),
@@ -50,8 +52,10 @@ public class AuthController {
         if (StringUtils.isBlank(username))
             throw new RestException(RspCode.TOKEN_AUTH_NOT_VALID);
 
-        UserContext userContext = new UserContext(1l, "wangmaocheng", "王茂成",
-                Lists.newArrayList("ROLE_ADMIN", "ROLE_EDITOR"));
+        UserContext userContext = new UserContext("wangmaocheng", Lists.newArrayList("ROLE_ADMIN", "ROLE_EDITOR"));
+        userContext.put("id", 1l);
+        userContext.put("name", "王茂成");
+
         Token token = tokenManager.createToken(userContext);
         TokenInfoDto tokenInfoDto = new TokenInfoDto(
                 token.getAccessToken(),

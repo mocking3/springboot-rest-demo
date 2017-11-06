@@ -1,7 +1,6 @@
 package net.runningcoder.web.security;
 
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Longs;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by wangmaocheng on 2017/11/1.
@@ -24,17 +22,15 @@ public class TokenManager {
     @Autowired
     private AppProperties properties;
 
-    public Token createToken(UserContext  userContext) {
+    public Token createToken(UserContext userContext) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         long accessTokenExpiresIn = properties.getSecurity().getJwt().getAccessTokenExpiresIn();
+
         String accessToken = Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(new Date(nowMillis + accessTokenExpiresIn * 1000))
-                .claim("id", userContext.getId() + "")
-                .claim("username", userContext.getUsername())
-                .claim("name", userContext.getName())
-                .claim("scopes", userContext.getScopes())
+                .setClaims(userContext)
                 .signWith(SignatureAlgorithm.HS256, generalKey())
                 .compact();
         Long refreshTokenExpiresIn = properties.getSecurity().getJwt().getRefreshTokenExpiresIn();
@@ -58,15 +54,11 @@ public class TokenManager {
 
     public UserContext parseUserByAccessToken(String accessToken) {
         Claims claims = Jwts.parser()
-                .setSigningKey(properties.getSecurity().getJwt().getSecret())
+                .setSigningKey(generalKey())
                 .parseClaimsJws(accessToken)
                 .getBody();
-        UserContext userContext = new UserContext(
-                Longs.tryParse((String) claims.get("id")),
-                (String) claims.get("username"),
-                (String) claims.get("name"),
-                (List<String>) claims.get("scopes")
-        );
+        UserContext userContext = new UserContext(null, null);
+        userContext.putAll(claims);
         return userContext;
     }
 

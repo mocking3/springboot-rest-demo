@@ -1,21 +1,25 @@
 package net.runningcoder.web.security;
 
-import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by wangmaocheng on 2017/11/1.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserContext {
-    private Long id;
-    private String username;
-    private String name;
-    private List<String> scopes = Lists.newArrayList();
+public class UserContext extends HashMap<String, Object> {
+    public static final String USERNAME = "username";
+    public static final String SCOPES = "scopes";
+
+    public UserContext(String username, List<String> scopes) {
+        put(USERNAME, username);
+        put(SCOPES, scopes);
+    }
+
+    public String getUsername() {
+        return (String) get(USERNAME);
+    }
+
+    public List<String> getScopes() {
+        return (List<String>) get(SCOPES);
+    }
 }

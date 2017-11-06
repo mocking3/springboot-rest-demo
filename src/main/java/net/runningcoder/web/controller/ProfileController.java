@@ -17,7 +17,7 @@ public class ProfileController {
     @ResponseBody
     public ProfileInfoDto profileInfo(@RequestAttribute UserContext userContext) {
         ProfileInfoDto profileInfoDto = new ProfileInfoDto();
-        profileInfoDto.setName(userContext.getName());
+        profileInfoDto.setName((String) userContext.get("name"));
         return profileInfoDto;
     }
 }
