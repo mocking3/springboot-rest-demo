@@ -3,15 +3,14 @@ package net.runningcoder.web;
 import net.runningcoder.web.annotaion.auth.AuthenticationInterceptor;
 import net.runningcoder.web.annotaion.auth.AuthorizationInterceptor;
 import net.runningcoder.web.annotaion.auth.GrantedAuthority;
-import net.runningcoder.web.annotaion.version.ExtendedRequestMappingHandlerMapping;
 import net.runningcoder.web.filter.CustomCorsFilter;
 import net.runningcoder.web.filter.HttpServletRequestReplacedFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +18,24 @@ import java.util.List;
 /**
  * Created by wangmaocheng on 2017/11/1.
  */
-@EnableWebMvc
 @Configuration
-public class WebConfig {
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authenticationInterceptor()).addPathPatterns("/api/**");
+        registry.addInterceptor(authorizationInterceptor()).addPathPatterns("/api/**");
+    }
+
+    @Bean
+    public AuthenticationInterceptor authenticationInterceptor() {
+        return new AuthenticationInterceptor();
+    }
+
+    @Bean
+    public AuthorizationInterceptor authorizationInterceptor() {
+        return new AuthorizationInterceptor();
+    }
 
     @Bean
     public FilterRegistrationBean getCharacterEncodingFilter() {
@@ -58,27 +72,6 @@ public class WebConfig {
         registrationBean.setUrlPatterns(urlPatterns);
         registrationBean.setOrder(3);
         return registrationBean;
-    }
-
-    @Bean
-    public AuthenticationInterceptor authenticationInterceptor() {
-        return new AuthenticationInterceptor();
-    }
-
-    @Bean
-    public AuthorizationInterceptor authorizationInterceptor() {
-        return new AuthorizationInterceptor();
-    }
-
-    @Bean
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        RequestMappingHandlerMapping requestMappingHandlerMapping = new ExtendedRequestMappingHandlerMapping();
-        requestMappingHandlerMapping.setRemoveSemicolonContent(false);
-        requestMappingHandlerMapping.setInterceptors(
-                authenticationInterceptor(),
-                authorizationInterceptor()
-        );
-        return requestMappingHandlerMapping;
     }
 
     @Bean

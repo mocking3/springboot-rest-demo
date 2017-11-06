@@ -1,6 +1,6 @@
 app:
   security.jwt:
-    access-token-expires-in: 3600 #访问token有效时间，单位秒
-    refresh-token-expires-in: 7200 #刷新token有效时间，单位秒
+    access-token-expires-in: 3600 #璁块棶token鏈夋晥鏃堕棿锛屽崟浣嶇
+    refresh-token-expires-in: 7200 #鍒锋柊token鏈夋晥鏃堕棿锛屽崟浣嶇
     secret: runningcoder
 
