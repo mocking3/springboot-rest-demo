@@ -30,4 +30,6 @@ public class ErrorRspDto extends RspDto {
         this.errorMsg = errorMsg;
     }
 
+
+
 }

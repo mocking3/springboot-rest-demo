@@ -12,6 +12,11 @@ public class RspDto {
 
     private Object responseParams;
 
+    public RspDto() {
+        this.requestId = System.currentTimeMillis() * 10000 + RandomUtils.nextInt(0, 10000);
+        this.responseParams = null;
+    }
+
     public RspDto(Object responseParams) {
         this.requestId = System.currentTimeMillis() * 10000 + RandomUtils.nextInt(0, 10000);
         this.responseParams = responseParams;

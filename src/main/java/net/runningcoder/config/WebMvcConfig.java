@@ -1,5 +1,6 @@
-package net.runningcoder.web;
+package net.runningcoder.config;
 
+import net.runningcoder.web.AppGrantedAuthority;
 import net.runningcoder.web.annotaion.auth.AuthenticationInterceptor;
 import net.runningcoder.web.annotaion.auth.AuthorizationInterceptor;
 import net.runningcoder.web.annotaion.auth.GrantedAuthority;

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app")
 public class AppProperties {
     private Security security;
+    private String alarmUsers;
 
     @Data
     public static class Security {

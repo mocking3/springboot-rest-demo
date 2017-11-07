@@ -1,9 +1,12 @@
 package net.runningcoder.web;
 
 import lombok.extern.slf4j.Slf4j;
+import net.runningcoder.config.AppProperties;
+import net.runningcoder.service.AlarmService;
 import net.runningcoder.web.dto.rsp.base.ErrorRspDto;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -27,6 +30,12 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 @ControllerAdvice
 public class AppExceptionHandler {
+
+    @Autowired
+    private AppProperties appProperties;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @ExceptionHandler({
             Exception.class
@@ -107,7 +116,21 @@ public class AppExceptionHandler {
         } else {
             erb = new ErrorRspDto(RspCode.SYSTEM_ERROR);
         }
+
+        String content = erb.toString() + "\n" + error(ex);
+        alarmService.sendMessage(appProperties.getAlarmUsers(), content, false);
         return erb;
+    }
+
+    public static String error(Exception e) {
+        String error = e.toString();
+        StackTraceElement[] st = e.getStackTrace();
+        if (null != st) {
+            for (int i = 0; i < st.length; i++) {
+                error += "\r\n\tat " + st[i];
+            }
+        }
+        return error;
     }
 
 }

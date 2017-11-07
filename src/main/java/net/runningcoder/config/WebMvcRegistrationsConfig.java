@@ -1,4 +1,4 @@
-package net.runningcoder.web;
+package net.runningcoder.config;
 
 import net.runningcoder.web.annotaion.version.ExtendedRequestMappingHandlerMapping;
 import org.springframework.boot.autoconfigure.web.WebMvcRegistrationsAdapter;

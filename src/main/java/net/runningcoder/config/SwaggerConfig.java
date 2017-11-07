@@ -1,4 +1,4 @@
-package net.runningcoder.web;
+package net.runningcoder.config;
 
 import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;

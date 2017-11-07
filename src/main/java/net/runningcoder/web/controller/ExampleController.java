@@ -5,8 +5,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.runningcoder.remote.LocalApi;
 import net.runningcoder.web.annotaion.auth.Authorization;
 import net.runningcoder.web.annotaion.version.Version;
+import net.runningcoder.web.dto.rsp.base.RspDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/example")
 public class ExampleController {
+
+    @Autowired
+    private LocalApi localApi;
 
     @ApiOperation(value = "例子1", notes = "接口版本（version>=1）+认证+授权（必须有OP_001权限）")
     @ApiImplicitParams({
@@ -46,5 +52,13 @@ public class ExampleController {
         JSONObject json = new JSONObject();
         json.put("result", true);
         return json;
+    }
+
+    @ApiOperation(value = "例子3", notes = "外部服务降级")
+    @ResponseBody
+    @GetMapping(value = "3")
+    public Object test3() {
+        RspDto errorCodes = localApi.getErrorCodes();
+        return errorCodes;
     }
 }
