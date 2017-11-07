@@ -6,14 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+
 /**
- * Created by wangmaocheng on 2017/11/1.
+ * Created by wangmaocheng on 2017/10/31.
  */
 @ApiModel
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ProfileInfoDto {
-    @ApiModelProperty("姓名")
-    private String name;
+public class ErrorCodeInfoDto {
+    @ApiModelProperty("错误码")
+    private Integer code;
+    @ApiModelProperty("错误描述")
+    private String message;
 }
