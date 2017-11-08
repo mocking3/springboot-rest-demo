@@ -45,7 +45,7 @@ public class ExampleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "访问token", paramType = "header", required = true)
     })
-    @Authorization(value = "OP_002")
+    @Authorization(value = "OP_008")
     @ResponseBody
     @GetMapping(value = "2")
     public Object test2() {

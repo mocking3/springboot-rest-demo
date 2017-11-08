@@ -12,7 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by wangmaocheng on 2017/11/1.
@@ -35,7 +35,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         if (method.getAnnotation(Authorization.class) != null) {
             UserContext userContext = (UserContext) request.getAttribute("userContext");
             String[] operations = method.getAnnotation(Authorization.class).value();
-            List<String> authorities = grantedAuthority.getAuthorities(userContext.getScopes());
+            Collection<String> authorities = grantedAuthority.getAuthorities(userContext.getScopes());
             if (!ArrayUtils.isEmpty(operations)) {
                 if (CollectionUtils.isEmpty(authorities))
                     throw new RestException(RspCode.PERMISSION_DENIED);

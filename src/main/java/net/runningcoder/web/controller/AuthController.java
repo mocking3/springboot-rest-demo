@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.swagger.annotations.*;
+import net.runningcoder.domain.User;
+import net.runningcoder.domain.Status;
+import net.runningcoder.service.UserService;
 import net.runningcoder.web.RestException;
 import net.runningcoder.web.RspCode;
 import net.runningcoder.web.dto.req.CreateTokenDto;
@@ -24,13 +27,21 @@ public class AuthController {
     @Autowired
     private TokenManager tokenManager;
 
+    @Autowired
+    private UserService userService;
+
     @ApiOperation(value = "获取token", notes = "需要认证的接口，必须先获取token")
     @PostMapping
     @ResponseBody
     public TokenInfoDto createToken(@ApiParam(value = "请求dto", required = true) @RequestBody CreateTokenDto reqDto) {
-        UserContext userContext = new UserContext("wangmaocheng", Lists.newArrayList("ROLE_ADMIN", "ROLE_EDITOR"));
-        userContext.put("id", 1l);
-        userContext.put("name", "王茂成");
+        User user = userService.getUser(reqDto.getUsername());
+        if (user == null || !user.getPassword().equals(reqDto.getPassword()) ||
+                user.getStatus() == Status.DISABLED)
+            throw new RestException(RspCode.GET_TOKEN_ERROR);
+
+        UserContext userContext = new UserContext(user.getUsername(), Lists.newArrayList(user.getRole().getCode()));
+        userContext.put("id", user.getId());
+        userContext.put("name", user.getName());
 
         Token token = tokenManager.createToken(userContext);
         TokenInfoDto tokenInfoDto = new TokenInfoDto(
@@ -45,7 +56,7 @@ public class AuthController {
     @PutMapping
     @ResponseBody
     public TokenInfoDto refreshToken(@ApiParam(value = "请求dto", required = true) @RequestBody RefreshTokenDto reqDto) {
-        String username = null;
+        String username;
         try {
             username = tokenManager.getSubjectByRefreshToken(reqDto.getRefreshToken());
         } catch (ExpiredJwtException e) {
@@ -56,9 +67,14 @@ public class AuthController {
         if (StringUtils.isBlank(username))
             throw new RestException(RspCode.TOKEN_AUTH_NOT_VALID);
 
-        UserContext userContext = new UserContext("wangmaocheng", Lists.newArrayList("ROLE_ADMIN", "ROLE_EDITOR"));
-        userContext.put("id", 1l);
-        userContext.put("name", "王茂成");
+        User user = userService.getUser(username);
+        if (user == null ||
+                user.getStatus() == Status.DISABLED)
+            throw new RestException(RspCode.GET_TOKEN_ERROR);
+
+        UserContext userContext = new UserContext(user.getUsername(), Lists.newArrayList(user.getRole().getCode()));
+        userContext.put("id", user.getId());
+        userContext.put("name", user.getName());
 
         Token token = tokenManager.createToken(userContext);
         TokenInfoDto tokenInfoDto = new TokenInfoDto(

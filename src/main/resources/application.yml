@@ -1,3 +1,19 @@
+spring:
+  datasource:
+    url: "jdbc:h2:mem:restdb"
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+    data: "classpath*:db/data-h2.sql"
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2.console.enabled: true
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    net.runningcoder: debug
+
 app:
   security.jwt:
     access-token-expires-in: 3600 #访问token有效时间，单位秒

@@ -22,11 +22,17 @@ public enum RspCode {
 
     ILLEGAL_REQUEST(10009, "非法请求"),
 
-    TOKEN_AUTH_NOT_VALID(10010, "无效的token认证"),
 
-    TOKEN_AUTH_EXPIRED(10011, "token认证过期"),
 
-    PERMISSION_DENIED(10012, "权限不足");
+    GET_TOKEN_ERROR(20001, "获取token失败（用户不存在或者用户名密码错误或者用户被禁用）"),
+
+    TOKEN_AUTH_NOT_VALID(20002, "无效的token认证"),
+
+    TOKEN_AUTH_EXPIRED(20003, "token认证过期"),
+
+    PERMISSION_DENIED(20004, "权限不足"),
+
+    ;
 
     private int code;
     private String message;

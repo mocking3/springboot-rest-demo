@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
 @Component
 public class DefaultGrantedAuthority implements GrantedAuthority {
     @Override
-    public List<String> getAuthorities(List<String> scopes) {
+    public Collection<String> getAuthorities(List<String> scopes) {
         return CollectionUtils.isEmpty(scopes) ? Lists.newArrayList() : scopes;
     }
 }
