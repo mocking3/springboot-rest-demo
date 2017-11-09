@@ -30,7 +30,7 @@ public class TokenManager {
         String accessToken = Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(new Date(nowMillis + accessTokenExpiresIn * 1000))
-                .setClaims(userContext)
+                .addClaims(userContext)
                 .signWith(SignatureAlgorithm.HS256, generalKey())
                 .compact();
         Long refreshTokenExpiresIn = properties.getSecurity().getJwt().getRefreshTokenExpiresIn();
